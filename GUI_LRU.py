@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
-from FIFO_Page_Replacement_Algorithm import get_res
+from LRU_Page_Replacement_Algorithm import get_res
 def create_label():
     global temp
     if temp>len(all_f)-1:
@@ -17,8 +17,8 @@ def create_label():
     ttk.Label(root,text=pf,font=("Helvetica", word_size), borderwidth=10, relief=SUNKEN).grid(row=frames+1, column=temp+1)
     temp+=1
 temp=0
-frames=5
-lst=[3,2,1,2,4,1,3,2,5]
+frames=3
+lst=[1,2,3,4,3,1,4,2,5,2,1,2,3,4]
 word_size=20
 root = tk.Tk()
 root.title('Replace')
@@ -43,8 +43,8 @@ all_f,all_queue,all_pf=get_res(lst, frames)
 #     for index1,j in enumerate(i):
 #         ttk.Label(root, text=str(j),font=("Helvetica", word_size), borderwidth=10, relief="solid").grid(row=index1+1, column=index)
 label = ttk.Label(root, text="",font=("Helvetica", word_size), relief=SUNKEN)
-label.grid(row=frames+2, column=6,columnspan=2, sticky=tk.W)
-ttk.Label(root, text="Queue:",font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=5, sticky=tk.W)
+label.grid(row=frames+2, column=4,columnspan=8, sticky=tk.E)
+ttk.Label(root, text="Recently used order\n of previous column:",font=("Helvetica", word_size-7), relief=SUNKEN).grid(row=frames+2, column=4,columnspan=8, sticky=tk.W)
 
 # root.rowconfigure(frames+1, weight=1)
 ttk.Button(root, text="next step",command= lambda :create_label()).grid(row=frames+2, column=0,columnspan=4, sticky=tk.W,padx=60)

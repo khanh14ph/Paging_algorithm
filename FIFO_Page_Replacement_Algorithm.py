@@ -34,7 +34,7 @@ if __name__=="__main__":
     f,fault,top,pf = [],0,0,'No'
     print("Enter the reference string: ",end="")
     # s = list(map(int,input().strip().split()))
-    s=[3,2,1,4,3,4,5]
+    s=[1,2,3,4,1,2,5,1,2,3,4,5]
     print("\nString|Frame →\t",end='')
     for i in range(capacity):
         print(i,end=' ')
@@ -57,7 +57,5 @@ if __name__=="__main__":
             print(x,end=' ')
         for x in range(capacity-len(f)):
             print(' ',end=' ')
-        print("top",f[top])
         print(" %s"%pf)
     print("\nTotal requests: %d\nTotal Page Faults: %d\nFault Rate: %0.2f%%"%(len(s),fault,(fault/len(s))*100))
-    print(get_res(s,capacity))
