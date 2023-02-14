@@ -34,7 +34,7 @@ if __name__=="__main__":
     f,fault,top,pf = [],0,0,'No'
     print("Enter the reference string: ",end="")
     # s = list(map(int,input().strip().split()))
-    s=[1,2,3,4,1,2,5,1,2,3,4,5]
+    s=[1,2,3]
     print("\nString|Frame →\t",end='')
     for i in range(capacity):
         print(i,end=' ')

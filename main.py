@@ -3,6 +3,22 @@ from tkinter import *
 from tkinter import TclError, ttk
 from tkinter.ttk import Combobox
 import copy
+def get_dis(s,f):
+    order_lst=[]
+    order_lst1=[]
+    for i in s:
+        if i in f:
+            order_lst.append(i)
+    for i in f:
+        if i not in s:
+            order_lst.append(i)
+    print("lst",order_lst)
+    print("f",f)
+    for i in order_lst:
+        order_lst1.append(f.index(i))
+    print("order", order_lst1)
+    return order_lst1
+
 def get_res(algo,lst, capacity):
     if algo=="fifo":
         all_f=[]
@@ -30,7 +46,7 @@ def get_res(algo,lst, capacity):
             for x in range(capacity-len(f1)):
                 f1.append(" ")
             all_f.append(f1)
-        return all_f,all_queue, all_pf
+        return all_f,all_queue, all_pf, fault
     elif algo=="opt":
         f,fault,pf = [],0,'No'
         all_f=[]
@@ -40,32 +56,30 @@ def get_res(algo,lst, capacity):
         # occur1=copy.deepcopy(occurance)
         
         for i in range(len(lst)):
-            
+            order_lst=get_dis(lst[i+1:],f)
             if lst[i] not in f:
                 if len(f)<capacity:
                     f.append(lst[i])
                 else:
-                    for x in range(len(f)):
-                        if f[x] not in lst[i+1:]:
-                            f[x] = lst[i]
-                            break
-                        else:
-                            occurance[x] = lst[i+1:].index(f[x])
-                    else:
-                        f[occurance.index(max(occurance))] = s[i]
+                    
+
+                    index_of_max=order_lst[-1]
+                    print(index_of_max)
+                    f[index_of_max]=lst[i]
+                                    
                 fault += 1
                 pf = 'Yes'
             else:
 
                 pf = 'No'
+            fake=copy.deepcopy(get_dis(lst[i+2:],f))
+            all_occur.append(fake)
             all_pf.append(pf)
-            occur1=copy.deepcopy(occurance)
-            all_occur.append(occur1)
             f1=copy.deepcopy(f)
             for x in range(capacity-len(f1)):
                 f1.append(" ")
             all_f.append(f1)
-        return all_f, all_occur, all_pf
+        return all_f, all_occur, all_pf, fault
     elif algo=="lru":
         all_f=[]
         order_lst=[]
@@ -73,7 +87,7 @@ def get_res(algo,lst, capacity):
         f,st,fault,pf = [],[],0,'No'
         st1=copy.deepcopy(st)
         for i in lst:
-            order_lst.append(st1)
+            
             if i not in f:
                 if len(f)<capacity:
                     f.append(i)
@@ -88,15 +102,35 @@ def get_res(algo,lst, capacity):
                 st.append(st.pop(st.index(f.index(i))))
                 pf = 'No'
             st1=copy.deepcopy(st)
+            order_lst.append(st1)
             all_pf.append(pf)
             print("   %d\t\t"%i,end='')
             f1=copy.deepcopy(f)
             for x in range(capacity-len(f1)):
                 f1.append(" ")
             all_f.append(f1)
-        return all_f,order_lst,all_pf
+        return all_f,order_lst,all_pf, fault
     else:
         return None
+import matplotlib.pyplot as plt
+import numpy as np
+def plot(s):
+    s=s.get()
+    s=list(map(int,s.split()))
+    for algo in ["fifo","opt","lru"]:
+        y=[]
+        x=[]
+        for i in range(1,10):
+            print("frames",i)
+            fault=get_res(algo,s,i)[-1]
+            faultrate=fault/len(s)
+            x.append(i)
+            y.append(faultrate)
+        plt.plot(x, y, label =algo)
+    plt.xlabel("number of frames")
+    plt.ylabel("fault rate")
+    plt.legend()
+    plt.show()
 
     
 def create_input_frame(container):
@@ -139,15 +173,17 @@ def create_input_frame(container):
 
     cal = Button(frame, text="Submit", bg="ORANGE", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
     cal.grid(row=6, column=0,padx=100,pady=10)
+    cal1 = Button(frame, text="plot fault rate", bg="ORANGE", width=20, height=2, command= lambda : plot(stringvalue), font="comicsansms")
+    cal1.grid(row=6, column=1,padx=100,pady=10)
     return frame
 temp=0
 def get_queue_name(s):
     if s=="fifo":
         return "queue"
     if s=="lru":
-        return "Recently used order\n of previous column"
+        return "Least recently used"
     if s=="opt":
-        return "distance to reference\n in future"
+        return "closest to farthest"
     else: 
         return None
 def openNewWindow(stringvalue,framevalue,algovalue):
@@ -185,6 +221,7 @@ def openNewWindow(stringvalue,framevalue,algovalue):
         queue=all_queue[temp]
         pf=all_pf[temp]
         queue_fake=list(map(str,queue))
+        queue_fake=["f"+str(r) for r in queue_fake ]
         label.config(text=",".join(queue_fake))
         print(i)
 
@@ -202,7 +239,7 @@ def openNewWindow(stringvalue,framevalue,algovalue):
         ttk.Label(newWindow, text=i,font=("Helvetica", word_size)).grid(column=index+1, row=0)
     for i in range(frames):
         ttk.Label(newWindow, text=f"f{i}",font=("Helvetica", word_size),borderwidth=1, relief=SUNKEN).grid(row=i+1, column=0)
-    all_f,all_queue,all_pf=get_res(algo,lst, frames)
+    all_f,all_queue,all_pf, fault=get_res(algo,lst, frames)
     label = ttk.Label(newWindow, text="",font=("Helvetica", word_size), relief=SUNKEN)
     label.grid(row=frames+2, column=6,columnspan=2, sticky=tk.W)
     
