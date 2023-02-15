@@ -42,7 +42,10 @@ def get_res(algo,lst, capacity):
             all_pf.append(pf)
             f1=copy.deepcopy(f)
             queue1=copy.deepcopy(queue)
-            all_queue.append(queue1)
+            queue2=[]
+            for m in queue1:
+                queue2.append(f.index(m))
+            all_queue.append(queue2)
             for x in range(capacity-len(f1)):
                 f1.append(" ")
             all_f.append(f1)
