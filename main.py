@@ -113,6 +113,49 @@ def get_res(algo,lst, capacity):
                 f1.append(" ")
             all_f.append(f1)
         return all_f,order_lst,all_pf, fault
+
+    elif algo=="lfu":
+        all_f=[]
+        all_freq=[]
+        all_pf=[]
+        f,st,fault,pf = [],[],0,'No'
+        frequency_dict=dict()
+        for i in lst:
+            print(i, end=" ")
+            frequency_dict[i]=frequency_dict.get(i,0)+1
+            f_freq=dict()
+            for index,l in enumerate(f):
+                f_freq[index]=frequency_dict[l]
+            f_freq = dict(sorted(f_freq.items(), key=lambda item: item[1]))
+            
+
+            
+            print(frequency_dict)
+            if i not in f:
+                if len(f)<capacity:
+                    f.append(i)
+                    for index,l in enumerate(f):
+                        f_freq[index]=frequency_dict[l]
+                    f_freq = dict(sorted(f_freq.items(), key=lambda item: item[1]))
+                else:
+                    f[list(f_freq.keys())[0]]=i
+                    
+                    
+                    
+
+                pf = 'Yes'
+                fault += 1
+            else:
+                
+                pf = 'No'
+            
+            all_freq.append(f_freq)
+            all_pf.append(pf)
+            f1=copy.deepcopy(f)
+            for x in range(capacity-len(f1)):
+                f1.append(" ")
+            all_f.append(f1)
+        return all_f,all_freq,all_pf, fault
     else:
         return None
 import matplotlib.pyplot as plt
@@ -120,7 +163,7 @@ import numpy as np
 def plot(s):
     s=s.get()
     s=list(map(int,s.split()))
-    for algo in ["fifo","opt","lru"]:
+    for algo in ["fifo","opt","lru","lfu"]:
         y=[]
         x=[]
         for i in range(1,10):
@@ -169,15 +212,17 @@ def create_input_frame(container):
     fifoentry = Radiobutton(frame, text="First In First Out", variable=algovalue, value="fifo", font="comicsansms 20 bold")
     optentry = Radiobutton(frame, text="Optimal Page Replacement ", variable=algovalue, value="opt", font="comicsansms 20 bold")
     lruentry = Radiobutton(frame, text="Least Recently Used", variable=algovalue, value="lru", font="comicsansms 20 bold")
+    lfuentry = Radiobutton(frame, text="Least frequently Used", variable=algovalue, value="lfu", font="comicsansms 20 bold")
 
     fifoentry.grid(row=3, column=1,padx=100,pady=10)
     optentry.grid(row=4, column=1,padx=100,pady=10)
     lruentry.grid(row=5, column=1,padx=100,pady=10)
+    lfuentry.grid(row=6, column=1,padx=100,pady=10)
 
     cal = Button(frame, text="Submit", bg="ORANGE", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
-    cal.grid(row=6, column=0,padx=100,pady=10)
+    cal.grid(row=7, column=0,padx=100,pady=10)
     cal1 = Button(frame, text="plot fault rate", bg="ORANGE", width=20, height=2, command= lambda : plot(stringvalue), font="comicsansms")
-    cal1.grid(row=6, column=1,padx=100,pady=10)
+    cal1.grid(row=7, column=1,padx=100,pady=10)
     return frame
 temp=0
 def get_queue_name(s):
@@ -187,6 +232,8 @@ def get_queue_name(s):
         return "Least recently used"
     if s=="opt":
         return "closest to farthest"
+    if s=="lfu":
+        return "frequency dict"
     else: 
         return None
 def openNewWindow(stringvalue,framevalue,algovalue):
@@ -223,10 +270,13 @@ def openNewWindow(stringvalue,framevalue,algovalue):
         i=all_f[temp]
         queue=all_queue[temp]
         pf=all_pf[temp]
-        queue_fake=list(map(str,queue))
-        queue_fake=["f"+str(r) for r in queue_fake ]
+        if type(queue)==list:
+
+            queue_fake=list(map(str,queue))
+            queue_fake=["f"+r for r in queue_fake ]
+        elif type(queue)==dict:
+            queue_fake=["f"+str(r)+":"+str(queue[r]) for r in queue.keys() ]
         label.config(text=",".join(queue_fake))
-        print(i)
 
         for index1,j in enumerate(i):
             ttk.Label(newWindow, text=str(j),font=("Helvetica", word_size), borderwidth=10, relief=SUNKEN).grid(row=index1+1, column=temp+1)
