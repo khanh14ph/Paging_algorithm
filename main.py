@@ -191,20 +191,20 @@ def create_input_frame(container):
 
 
 
-    title_label = Label(frame, text="Page Replacement Algorithm", bg="CYAN", font="comicsansms 30 bold", width=45)
+    title_label = Label(frame, text="Page Replacement Algorithm", bg="#009999", font="comicsansms 30 bold", width=45)
     title_label.grid(row=0,columnspan=2)
     
 
-    frame_label = Label(frame, text="Frame Size : ", bg="YELLOW", font="comicsansms 20 bold", width=10)
+    frame_label = Label(frame, text="Frame Size : ", font="comicsansms 20 bold", width=10)
     frame_label.grid(row=1, column=0,padx=100,pady=10)
 
     frameentry = Combobox(frame, textvariable=framevalue, width=20, value=dropdown, font="comicsansms 19 bold", state="readonly")
     frameentry.grid(row=1, column=1,padx=100,pady=10)
 
 
-    string_label = Label(frame, text="Enter String: ", bg="YELLOW", font="comicsansms 20 bold", width=10)
+    string_label = Label(frame, text="Enter String: ", font="comicsansms 20 bold", width=10)
     string_label.grid(row=2, column=0, padx=100,pady=10)
-    algo_label = Label(frame, text="Algorithm   : ", bg="YELLOW", font="comicsansms 20 bold", width=10)
+    algo_label = Label(frame, text="Algorithm   : ",font="comicsansms 20 bold", width=10)
     algo_label.grid(row=3, column=0, padx=100,pady=10)
     
     stringentry = Entry(frame, textvariable=stringvalue, width=20, font="comicsansms 20 bold")
@@ -219,9 +219,9 @@ def create_input_frame(container):
     lruentry.grid(row=5, column=1,padx=100,pady=10)
     lfuentry.grid(row=6, column=1,padx=100,pady=10)
 
-    cal = Button(frame, text="Submit", bg="ORANGE", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
+    cal = Button(frame, text="Submit", bg="#66B2FF", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
     cal.grid(row=7, column=0,padx=100,pady=10)
-    cal1 = Button(frame, text="plot fault rate", bg="ORANGE", width=20, height=2, command= lambda : plot(stringvalue), font="comicsansms")
+    cal1 = Button(frame, text="plot fault rate", bg="#66B2FF", width=20, height=2, command= lambda : plot(stringvalue), font="comicsansms")
     cal1.grid(row=7, column=1,padx=100,pady=10)
     return frame
 temp=0
@@ -248,7 +248,7 @@ def openNewWindow(stringvalue,framevalue,algovalue):
     print(algo)
     # sets the title of the
     # Toplevel widget
-    newWindow.title("New Window")
+    newWindow.title("Frames table")
  
     # sets the geometry of toplevel
     newWindow.geometry('600x400+50+50')
