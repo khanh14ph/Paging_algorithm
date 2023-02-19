@@ -183,7 +183,8 @@ def create_input_frame(container):
 
     frame = ttk.Frame(container)
     dropdown = [1,2,3,4,5,6,7,8,9,10]
-    
+    # frame.columnconfigure(0, minsize=100, weight=2)
+    # frame.columnconfigure(1, minsize=100, weight=1)
     framevalue = IntVar()
     stringvalue = StringVar()
     algovalue = StringVar()
@@ -191,38 +192,38 @@ def create_input_frame(container):
 
 
 
-    title_label = Label(frame, text="Page Replacement Algorithm", bg="#009999", font="comicsansms 30 bold", width=45)
-    title_label.grid(row=0,columnspan=2)
+    title_label = Label(frame, text="Page Replacement Algorithm", bg="#009999", font="comicsansms 30 bold")
+    title_label.grid(row=0,columnspan=2,sticky='ew')
     
-
-    frame_label = Label(frame, text="Frame Size : ", font="comicsansms 20 bold", width=10)
-    frame_label.grid(row=1, column=0,padx=100,pady=10)
+    
+    frame_label = Label(frame, text="Frame Size : ", font="comicsansms 20 bold")
+    frame_label.grid(row=1, column=0,padx=50,pady=10,sticky='w')
 
     frameentry = Combobox(frame, textvariable=framevalue, width=20, value=dropdown, font="comicsansms 19 bold", state="readonly")
-    frameentry.grid(row=1, column=1,padx=100,pady=10)
+    frameentry.grid(row=1, column=1,padx=50,pady=10,sticky='w')
 
 
-    string_label = Label(frame, text="Enter String: ", font="comicsansms 20 bold", width=10)
-    string_label.grid(row=2, column=0, padx=100,pady=10)
-    algo_label = Label(frame, text="Algorithm   : ",font="comicsansms 20 bold", width=10)
-    algo_label.grid(row=3, column=0, padx=100,pady=10)
+    string_label = Label(frame, text="Enter String(seperated by space): ", font="comicsansms 20 bold")
+    string_label.grid(row=2, column=0, padx=50,pady=10,sticky='w')
+    algo_label = Label(frame, text="Algorithm   : ",font="comicsansms 20 bold")
+    algo_label.grid(row=3, column=0, padx=50,pady=10,sticky='w')
     
     stringentry = Entry(frame, textvariable=stringvalue, width=20, font="comicsansms 20 bold")
-    stringentry.grid(row=2, column=1,padx=100,pady=10)
+    stringentry.grid(row=2, column=1,padx=50,pady=10,sticky='w')
     fifoentry = Radiobutton(frame, text="First In First Out", variable=algovalue, value="fifo", font="comicsansms 20 bold")
     optentry = Radiobutton(frame, text="Optimal Page Replacement ", variable=algovalue, value="opt", font="comicsansms 20 bold")
     lruentry = Radiobutton(frame, text="Least Recently Used", variable=algovalue, value="lru", font="comicsansms 20 bold")
     lfuentry = Radiobutton(frame, text="Least frequently Used", variable=algovalue, value="lfu", font="comicsansms 20 bold")
 
-    fifoentry.grid(row=3, column=1,padx=100,pady=10)
-    optentry.grid(row=4, column=1,padx=100,pady=10)
-    lruentry.grid(row=5, column=1,padx=100,pady=10)
-    lfuentry.grid(row=6, column=1,padx=100,pady=10)
+    fifoentry.grid(row=3, column=1,padx=50,pady=10,sticky='w')
+    optentry.grid(row=4, column=1,padx=50,pady=10,sticky='w')
+    lruentry.grid(row=5, column=1,padx=50,pady=10,sticky='w')
+    lfuentry.grid(row=6, column=1,padx=50,pady=10,sticky='w')
 
     cal = Button(frame, text="Submit", bg="#66B2FF", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
     cal.grid(row=7, column=0,padx=100,pady=10)
     cal1 = Button(frame, text="plot fault rate", bg="#66B2FF", width=20, height=2, command= lambda : plot(stringvalue), font="comicsansms")
-    cal1.grid(row=7, column=1,padx=100,pady=10)
+    cal1.grid(row=7, column=1,padx=100,pady=10,sticky='w')
     return frame
 temp=0
 def get_queue_name(s):
