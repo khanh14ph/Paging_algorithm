@@ -6,14 +6,18 @@ import copy
 def get_dis(s,f):
     order_lst=[]
     order_lst1=[]
+    check=[]
     for i in s:
         if i in f:
-            order_lst.append(i)
+            if i not in check:
+                check.append(i)
+                order_lst.append(i)
     for i in f:
         if i not in s:
             order_lst.append(i)
     print("lst",order_lst)
     print("f",f)
+
     for i in order_lst:
         order_lst1.append(f.index(i))
     print("order", order_lst1)
@@ -59,12 +63,13 @@ def get_res(algo,lst, capacity):
         # occur1=copy.deepcopy(occurance)
         
         for i in range(len(lst)):
-            order_lst=get_dis(lst[i+1:],f)
+            
             if lst[i] not in f:
                 if len(f)<capacity:
                     f.append(lst[i])
+                    order_lst=get_dis(lst[i+1:],f)
                 else:
-                    
+                    order_lst=get_dis(lst[i+1:],f)
 
                     index_of_max=order_lst[-1]
                     print(index_of_max)
@@ -228,13 +233,13 @@ def create_input_frame(container):
 temp=0
 def get_queue_name(s):
     if s=="fifo":
-        return "queue"
+        return "queue:"
     if s=="lru":
-        return "Least recently used"
+        return "Least recently used:"
     if s=="opt":
-        return "closest to farthest"
+        return "closest to farthest:"
     if s=="lfu":
-        return "frequency dict"
+        return "frequency dict:"
     else: 
         return None
 def openNewWindow(stringvalue,framevalue,algovalue):
@@ -294,10 +299,11 @@ def openNewWindow(stringvalue,framevalue,algovalue):
     for i in range(frames):
         ttk.Label(newWindow, text=f"f{i}",font=("Helvetica", word_size),borderwidth=1, relief=SUNKEN).grid(row=i+1, column=0)
     all_f,all_queue,all_pf, fault=get_res(algo,lst, frames)
+    ttk.Label(newWindow, text=get_queue_name(algo),font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=0, columnspan=10, padx=150,sticky=tk.W)
     label = ttk.Label(newWindow, text="",font=("Helvetica", word_size), relief=SUNKEN)
-    label.grid(row=frames+2, column=6,columnspan=2, sticky=tk.W)
+    label.grid(row=frames+2, column=1,columnspan=10,padx=100,sticky=tk.E)
     
-    ttk.Label(newWindow, text=get_queue_name(algo),font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=5, sticky=tk.W)
+    
 
     root.rowconfigure(frames+1, weight=1)
     ttk.Button(newWindow, text="next step",command= lambda :create_label()).grid(row=frames+2, column=0,columnspan=4, sticky=tk.W,padx=60)
