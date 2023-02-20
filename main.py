@@ -210,7 +210,7 @@ def create_input_frame(container):
 
     string_label = Label(frame, text="Enter String(seperated by space): ", font="comicsansms 20 bold")
     string_label.grid(row=2, column=0, padx=50,pady=10,sticky='w')
-    algo_label = Label(frame, text="Algorithm   : ",font="comicsansms 20 bold")
+    algo_label = Label(frame, text="Algorithm : ",font="comicsansms 20 bold")
     algo_label.grid(row=3, column=0, padx=50,pady=10,sticky='w')
     
     stringentry = Entry(frame, textvariable=stringvalue, width=20, font="comicsansms 20 bold")
