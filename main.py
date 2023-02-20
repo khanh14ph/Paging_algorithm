@@ -198,7 +198,7 @@ def create_input_frame(container):
 
 
     title_label = Label(frame, text="Page Replacement Algorithm", bg="#009999", font="comicsansms 30 bold")
-    title_label.grid(row=0,columnspan=2,sticky='ew')
+    title_label.grid(row=0,columnspan=2,sticky='we')
     
     
     frame_label = Label(frame, text="Frame Size : ", font="comicsansms 20 bold")
@@ -220,10 +220,10 @@ def create_input_frame(container):
     lruentry = Radiobutton(frame, text="Least Recently Used", variable=algovalue, value="lru", font="comicsansms 20 bold")
     lfuentry = Radiobutton(frame, text="Least frequently Used", variable=algovalue, value="lfu", font="comicsansms 20 bold")
 
-    fifoentry.grid(row=3, column=1,padx=50,pady=10,sticky='w')
-    optentry.grid(row=4, column=1,padx=50,pady=10,sticky='w')
-    lruentry.grid(row=5, column=1,padx=50,pady=10,sticky='w')
-    lfuentry.grid(row=6, column=1,padx=50,pady=10,sticky='w')
+    fifoentry.grid(row=4, column=0,padx=50,pady=10,sticky='w')
+    optentry.grid(row=5, column=0,padx=50,pady=10,sticky='w')
+    lruentry.grid(row=4, column=1,padx=50,pady=10,sticky='w')
+    lfuentry.grid(row=5, column=1,padx=50,pady=10,sticky='w')
 
     cal = Button(frame, text="Submit", bg="#66B2FF", width=20, height=2, command= lambda :openNewWindow(stringvalue,framevalue,algovalue), font="comicsansms")
     cal.grid(row=7, column=0,padx=100,pady=10)
@@ -233,11 +233,11 @@ def create_input_frame(container):
 temp=0
 def get_queue_name(s):
     if s=="fifo":
-        return "queue:"
+        return "Queue:"
     if s=="lru":
         return "Least recently used:"
     if s=="opt":
-        return "closest to farthest:"
+        return "Closest to farthest in the future:"
     if s=="lfu":
         return "frequency dict:"
     else: 
@@ -299,19 +299,19 @@ def openNewWindow(stringvalue,framevalue,algovalue):
     for i in range(frames):
         ttk.Label(newWindow, text=f"f{i}",font=("Helvetica", word_size),borderwidth=1, relief=SUNKEN).grid(row=i+1, column=0)
     all_f,all_queue,all_pf, fault=get_res(algo,lst, frames)
-    ttk.Label(newWindow, text=get_queue_name(algo),font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=0, columnspan=10, padx=150,sticky=tk.W)
+    ttk.Label(newWindow, text=get_queue_name(algo),font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=1, columnspan=100, padx=150,sticky=tk.W)
     label = ttk.Label(newWindow, text="",font=("Helvetica", word_size), relief=SUNKEN)
-    label.grid(row=frames+2, column=1,columnspan=10,padx=100,sticky=tk.E)
+    label.grid(row=frames+3, column=1,columnspan=100,padx=150,sticky="ew")
     
     
 
     root.rowconfigure(frames+1, weight=1)
-    ttk.Button(newWindow, text="next step",command= lambda :create_label()).grid(row=frames+2, column=0,columnspan=4, sticky=tk.W,padx=60)
+    ttk.Button(newWindow, text="next step",command= lambda :create_label()).grid(row=frames+2, column=0,columnspan=100, sticky=tk.W,padx=60)
 
 
 
 root = tk.Tk()
-root.geometry("1000x750")
+# root.geometry("900x750")
 root.resizable(0, 0)
 try:
     # windows only (remove the minimize/maximize button)
@@ -325,4 +325,3 @@ input_frame = create_input_frame(root)
 input_frame.grid(row=0, column=0,columnspan=3)
 
 root.mainloop()
-
