@@ -169,15 +169,16 @@ def plot(s):
     s=s.get()
     s=list(map(int,s.split()))
     for algo in ["fifo","opt","lru","lfu"]:
-        y=[]
-        x=[]
-        for i in range(1,10):
-            print("frames",i)
-            fault=get_res(algo,s,i)[-1]
-            faultrate=fault/len(s)
-            x.append(i)
-            y.append(faultrate)
-        plt.plot(x, y, label =algo)
+        # if algo=="fifo":
+            y=[]
+            x=[]
+            for i in range(1,10):
+                print("frames",i)
+                fault=get_res(algo,s,i)[-1]
+                faultrate=fault/len(s)
+                x.append(i)
+                y.append(faultrate)
+            plt.plot(x, y, label =algo)
     plt.xlabel("number of frames")
     plt.ylabel("fault rate")
     plt.legend()
@@ -237,7 +238,7 @@ def get_queue_name(s):
     if s=="lru":
         return "Least recently used:"
     if s=="opt":
-        return "Closest to farthest in the future:"
+        return "Closest to farthest:"
     if s=="lfu":
         return "frequency dict:"
     else: 
@@ -297,7 +298,7 @@ def openNewWindow(stringvalue,framevalue,algovalue):
 
         ttk.Label(newWindow, text=i,font=("Helvetica", word_size)).grid(column=index+1, row=0)
     for i in range(frames):
-        ttk.Label(newWindow, text=f"f{i}",font=("Helvetica", word_size),borderwidth=1, relief=SUNKEN).grid(row=i+1, column=0)
+        ttk.Label(newWindow, text=f"f{i}",font=("Helvetica", word_size),borderwidth=1, relief=SUNKEN).grid(row=i+1, column=0, padx=20)
     all_f,all_queue,all_pf, fault=get_res(algo,lst, frames)
     ttk.Label(newWindow, text=get_queue_name(algo),font=("Helvetica", word_size), relief=SUNKEN).grid(row=frames+2, column=1, columnspan=100, padx=150,sticky=tk.W)
     label = ttk.Label(newWindow, text="",font=("Helvetica", word_size), relief=SUNKEN)
@@ -325,3 +326,4 @@ input_frame = create_input_frame(root)
 input_frame.grid(row=0, column=0,columnspan=3)
 
 root.mainloop()
+# 1 2 3 4 1 2 5 1 2 3 4 5
